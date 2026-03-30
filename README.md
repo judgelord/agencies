@@ -14,7 +14,7 @@ The package has two primary functions:
   - `build_regextable()`: Constructs the regex lookup table from a Google Sheets
     crosswalk and a bundled Excel file of agency web URLs.
   - `extract_agencies()`: Searches a character vector for agency mentions using the
-    lookup table produced by build_regextable().
+    lookup table produced by `build_regextable()`.
 
 
 Installation
@@ -28,7 +28,7 @@ library(regextable.agencies)
 Authentication
 --------------
 `build_regextable()` reads the agency crosswalk from Google Sheets using the
-googlesheets4 package, which requires authentication with a Google account that has
+`googlesheets4` package, which requires authentication with a Google account that has
 read access to the sheet.
 
 Interactive authentication (default):
@@ -64,14 +64,15 @@ Returns a list with two elements:
   `regextable `  A tibble with one row per agency, containing:
                  - agency: the standardized short agency name
                  - envirodatagov_url: the root URL from the EnviroData.gov web tracker
-                 - pattern: a regex pattern of the form \bALIAS\b|\bALIAS\b|... for
+                 - pattern: a regex pattern of the form `\bALIAS\b|\bALIAS\b|...` for
                    all non-duplicate aliases associated with that agency
   duplicates   A character vector of alias strings that matched more than one agency
                and were therefore excluded from the regex patterns (except where the
-               alias exactly matches the agency's primary department_agency_acronym,
+               alias exactly matches the agency's primary `department_agency_acronym`,
                in which case it is retained for that agency).
 
 Example:
+```
   texts <- c(
     "The EPA issued new guidance on water quality.",
     "Both the Secret Service and DOJ are investigating."
@@ -79,6 +80,7 @@ Example:
 
   results <- extract_agencies(texts, table$regextable)
   print(results)
+```
 ```
   #> # A tibble: 3 × 3
   #>   text_id agency          envirodatagov_url
@@ -108,8 +110,8 @@ index, the matched agency name, and the associated EnviroData.gov URL.
 
 Parameters:
   `text`          A character vector of text to search.
-  `regextable`    A regex lookup table (the $regextable element) returned by
-                build_regextable().
+  `regextable`    A regex lookup table (the `$regextable` element) returned by
+                `build_regextable()`.
 
 Returns a tibble with one row per match, including:
   `text_id`             The index position of the matched text in the input vector.
@@ -117,7 +119,7 @@ Returns a tibble with one row per match, including:
   `envirodatagov_url`   The root URL for the agency from the EnviroData.gov tracker.
 
 If the same agency matches multiple times in the same input string, only distinct
-(text_id, agency, envirodatagov_url) combinations are returned.
+`(text_id, agency, envirodatagov_url)` combinations are returned.
 
 Example:
 ```
